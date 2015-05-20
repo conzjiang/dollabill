@@ -15,26 +15,6 @@
     this.els = els;
   };
 
-  DOMNodeCollection.prototype.html = function (html) {
-    if (html) {
-      this.each(function () {
-        this.innerHTML = html;
-      });
-
-      return this;
-    } else {
-      return this.first().innerHTML;
-    }
-  };
-
-  DOMNodeCollection.prototype.empty = function () {
-    this.each(function () {
-      this.innerHTML = "";
-    });
-
-    return this;
-  };
-
   DOMNodeCollection.prototype.append = function (selector) {
     if (selector instanceof DOMNodeCollection) {
       var that = this;
@@ -74,7 +54,27 @@
     });
   };
 
+  DOMNodeCollection.prototype.empty = function () {
+    this.each(function () {
+      this.innerHTML = "";
+    });
+
+    return this;
+  };
+
   DOMNodeCollection.prototype.first = function () {
     return this.els[0];
+  };
+
+  DOMNodeCollection.prototype.html = function (html) {
+    if (html) {
+      this.each(function () {
+        this.innerHTML = html;
+      });
+
+      return this;
+    } else {
+      return this.first().innerHTML;
+    }
   };
 })(this);

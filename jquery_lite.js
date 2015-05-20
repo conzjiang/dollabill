@@ -105,6 +105,18 @@
     }
   };
 
+  DOMNodeCollection.prototype.parent = function () {
+    var parents = [];
+
+    this.each(function () {
+      if (parents.indexOf(this.parentElement) === -1) {
+        parents.push(this.parentElement);
+      }
+    });
+
+    return new DOMNodeCollection(parents);
+  };
+
   DOMNodeCollection.prototype.removeClass = function (className) {
     if (className) {
       this.each(function () {

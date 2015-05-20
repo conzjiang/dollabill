@@ -13,6 +13,7 @@
 
   var DOMNodeCollection = function (els) {
     this.els = els;
+    this.length = this.els.length;
   };
 
   DOMNodeCollection.prototype.addClass = function (className) {
@@ -52,8 +53,26 @@
 
       return this;
     } else {
-      return this.first().getAttribute(attr);
+      return this.els[0].getAttribute(attr);
     }
+  };
+
+  DOMNodeCollection.prototype.children = function () {
+    var allChildren = [];
+    var queue = this.els.slice();
+
+    while (queue.length) {
+      var el = queue.shift();
+      var children = el.children;
+      var length = children.length;
+
+      for (var i = 0; i < length; i++) {
+        allChildren.push(children[i]);
+        queue.push(children[i]);
+      }
+    }
+
+    return new DOMNodeCollection(allChildren);
   };
 
   DOMNodeCollection.prototype.each = function (callback) {
@@ -71,7 +90,7 @@
   };
 
   DOMNodeCollection.prototype.first = function () {
-    return this.els[0];
+    return $$(this.els[0]);
   };
 
   DOMNodeCollection.prototype.html = function (html) {
@@ -82,7 +101,7 @@
 
       return this;
     } else {
-      return this.first().innerHTML;
+      return this.els[0].innerHTML;
     }
   };
 

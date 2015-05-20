@@ -17,6 +17,18 @@
     }
   };
 
+  $$.extend = function (object) {
+    var toMerge = Array.prototype.slice.call(arguments, 1);
+
+    toMerge.forEach(function (options) {
+      for (var attr in options) {
+        object[attr] = options[attr];
+      }
+    });
+
+    return object;
+  };
+
   var DOMNodeCollection = $$.DOMNodeCollection = function (els) {
     this.els = els;
     this.length = this.els.length;

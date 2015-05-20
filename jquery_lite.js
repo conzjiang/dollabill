@@ -89,6 +89,21 @@
     return this;
   };
 
+  DOMNodeCollection.prototype.find = function (selector) {
+    var found = [];
+
+    this.each(function () {
+      var match = this.querySelectorAll(selector);
+      var length = match.length;
+
+      for (var i = 0; i < length; i++) {
+        found.push(match[i]);
+      }
+    });
+
+    return new DOMNodeCollection(found);
+  };
+
   DOMNodeCollection.prototype.first = function () {
     return $$(this.els[0]);
   };

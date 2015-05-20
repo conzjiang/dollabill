@@ -35,6 +35,27 @@
     return this;
   };
 
+  DOMNodeCollection.prototype.append = function (selector) {
+    if (selector instanceof DOMNodeCollection) {
+      var that = this;
+
+      selector.each(function () {
+        that.append(this.cloneNode(true));
+        this.parentElement.removeChild(this);
+      });
+    } else {
+      this.each(function () {
+        if (selector instanceof HTMLElement) {
+          this.appendChild(selector.cloneNode(true));
+        } else if (typeof selector === "string") {
+          this.innerHTML += selector;
+        }
+      });
+    }
+
+    return this;
+  };
+
   DOMNodeCollection.prototype.each = function (callback) {
     this.els.forEach(function (el, i) {
       callback.call(el, i);

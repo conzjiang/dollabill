@@ -15,6 +15,14 @@
     this.els = els;
   };
 
+  DOMNodeCollection.prototype.addClass = function (className) {
+    this.each(function () {
+      this.classList.add(className);
+    });
+
+    return this;
+  };
+
   DOMNodeCollection.prototype.append = function (selector) {
     if (selector instanceof DOMNodeCollection) {
       var that = this;
@@ -76,5 +84,19 @@
     } else {
       return this.first().innerHTML;
     }
+  };
+
+  DOMNodeCollection.prototype.removeClass = function (className) {
+    if (className) {
+      this.each(function () {
+        this.classList.remove(className);
+      });
+    } else {
+      this.each(function () {
+        this.className = "";
+      });
+    }
+
+    return this;
   };
 })(this);

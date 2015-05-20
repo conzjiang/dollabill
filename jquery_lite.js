@@ -15,4 +15,29 @@
     this.els = els;
   };
 
+  DOMNodeCollection.prototype.html = function (html) {
+    if (html) {
+      this.each(function () {
+        this.innerHTML = html;
+      });
+
+      return this;
+    } else {
+      return this.els[0].innerHTML;
+    }
+  };
+
+  DOMNodeCollection.prototype.empty = function () {
+    this.each(function () {
+      this.innerHTML = "";
+    });
+
+    return this;
+  };
+
+  DOMNodeCollection.prototype.each = function (callback) {
+    this.els.forEach(function (el, i) {
+      callback.call(el, i);
+    });
+  };
 })(this);

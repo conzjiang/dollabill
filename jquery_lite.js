@@ -132,6 +132,12 @@
     return new DOMNodeCollection(parents);
   };
 
+  DOMNodeCollection.prototype.remove = function () {
+    this.each(function () {
+      this.parentElement.removeChild(this);
+    });
+  };
+
   DOMNodeCollection.prototype.removeClass = function (className) {
     if (className) {
       this.each(function () {

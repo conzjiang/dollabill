@@ -11,9 +11,8 @@
       contentType: "application/x-www-form-urlencoded; charset=UTF-8"
     };
 
-    options = $$.extend({}, defaults, options);
-
     var http = new XMLHttpRequest();
+    options = $$.extend({}, defaults, options);
     var handler = new RequestHandler(http, options);
 
     http.onreadystatechange = function () {
@@ -28,40 +27,52 @@
       }
     };
 
-
     http.open(handler.method, handler.url);
     handler.setRequestHeaders();
-    http.send(new FormData(options.data));
+    http.send(handler.data);
 
     return http;
   };
+
 
   var RequestHandler = function (http, options) {
     $$.extend(this, options);
 
     this.http = http;
     this.method = this.method.toUpperCase();
+    this.data = this.encodeToURI();
     this.setUpURL();
   };
 
   RequestHandler.prototype.setUpURL = function () {
     if (this.method === "GET") {
-      this.url += "?" + this.encodeToURI();
+      this.url += "?" + this.data;
+    }
+  };
+
+  var encode = function (key, val) {
+    if (typeof val === "object") {
+      var queryParams = [];
+
+      for (var attr in val) {
+        var param = val[attr];
+        queryParams.push(encode(key + "[" + attr + "]", param));
+      }
+
+      return queryParams.join("&");
+    } else {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(val);
     }
   };
 
   RequestHandler.prototype.encodeToURI = function () {
-    var queryStr = "";
+    var query = [];
 
     for (var key in this.data) {
-      queryStr += this.encode(key) + "=" + this.encode(this.data[key]);
+      query.push(encode(key, this.data[key]));
     }
 
-    return queryStr;
-  };
-
-  RequestHandler.prototype.encode = function (arg) {
-    return encodeURIComponent(arg);
+    return query.join("&");
   };
 
   RequestHandler.prototype.setRequestHeaders = function () {

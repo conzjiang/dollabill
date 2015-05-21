@@ -27,8 +27,8 @@
 
     this.http = new XMLHttpRequest();
     this.method = this.method.toUpperCase();
-    this.encodeToURI();
     this.setUpURL();
+    this.handleJSON();
     this.bindListeners();
   };
 
@@ -59,8 +59,16 @@
 
   AjaxRequest.prototype.setUpURL = function () {
     if (this.method === "GET") {
+      this.encodeToURI();
       this.url += "?" + this.data;
     }
+  };
+
+  AjaxRequest.prototype.handleJSON = function () {
+    if (this.dataType !== "json") { return; }
+
+    this.contentType = "application/json";
+    this.data = JSON.stringify(this.data);
   };
 
   AjaxRequest.prototype.bindListeners = function () {

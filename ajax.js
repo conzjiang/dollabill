@@ -12,13 +12,7 @@
     };
 
     options = $$.extend({}, defaults, options);
-    var http = new AjaxRequest(options);
-
-    http.open();
-    http.setRequestHeaders();
-    http.send();
-
-    return http;
+    return new AjaxRequest(options);
   };
 
 
@@ -27,9 +21,14 @@
 
     this.http = new XMLHttpRequest();
     this.method = this.method.toUpperCase();
+
     this.setUpURL();
     this.handleJSON();
     this.bindListeners();
+
+    this.http.open(this.method, this.url);
+    this.setRequestHeaders();
+    this.http.send(this.data);
   };
 
   AjaxRequest.prototype.encodeToURI = function () {
@@ -97,10 +96,6 @@
     }
   };
 
-  AjaxRequest.prototype.open = function () {
-    this.http.open(this.method, this.url);
-  };
-
   AjaxRequest.prototype.setRequestHeaders = function () {
     if (this.method === "POST") {
       this.http.setRequestHeader("Content-Type", this.contentType);
@@ -117,9 +112,5 @@
 
       this.http.setRequestHeader("Accept", headerVal);
     }
-  };
-
-  AjaxRequest.prototype.send = function () {
-    this.http.send(this.data);
   };
 })(this);

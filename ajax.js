@@ -11,43 +11,35 @@
       contentType: "application/x-www-form-urlencoded; charset=UTF-8"
     };
 
-    var http = new XMLHttpRequest();
     options = $$.extend({}, defaults, options);
-    var handler = new RequestHandler(http, options);
+    var http = new AjaxRequest(options);
 
-    http.onreadystatechange = function () {
-      if (http.readyState === XMLHttpRequest.DONE) {
-        var response = handler.parseResponse();
-
-        if (http.status >= 200 && http.status < 300) {
-          options.success(response, http);
-        } else {
-          options.error(response, http);
-        }
-      }
-    };
-
-    http.open(handler.method, handler.url);
-    handler.setRequestHeaders();
-    http.send(handler.data);
+    http.open();
+    http.setRequestHeaders();
+    http.send();
 
     return http;
   };
 
 
-  var RequestHandler = function (http, options) {
+  var AjaxRequest = function (options) {
     $$.extend(this, options);
 
-    this.http = http;
+    this.http = new XMLHttpRequest();
     this.method = this.method.toUpperCase();
-    this.data = this.encodeToURI();
+    this.encodeToURI();
     this.setUpURL();
+    this.bindListeners();
   };
 
-  RequestHandler.prototype.setUpURL = function () {
-    if (this.method === "GET") {
-      this.url += "?" + this.data;
+  AjaxRequest.prototype.encodeToURI = function () {
+    var query = [];
+
+    for (var key in this.data) {
+      query.push(encode(key, this.data[key]));
     }
+
+    this.data = query.join("&");
   };
 
   var encode = function (key, val) {
@@ -65,17 +57,43 @@
     }
   };
 
-  RequestHandler.prototype.encodeToURI = function () {
-    var query = [];
-
-    for (var key in this.data) {
-      query.push(encode(key, this.data[key]));
+  AjaxRequest.prototype.setUpURL = function () {
+    if (this.method === "GET") {
+      this.url += "?" + this.data;
     }
-
-    return query.join("&");
   };
 
-  RequestHandler.prototype.setRequestHeaders = function () {
+  AjaxRequest.prototype.bindListeners = function () {
+    this.http.onreadystatechange = this.handleResponse.bind(this);
+  };
+
+  AjaxRequest.prototype.handleResponse = function () {
+    if (this.http.readyState === XMLHttpRequest.DONE) {
+      var response = this.parseResponse();
+
+      if (this.http.status >= 200 && this.http.status < 300) {
+        this.success(response, this.http);
+      } else {
+        this.error(response, this.http);
+      }
+    }
+  };
+
+  AjaxRequest.prototype.parseResponse = function () {
+    var contentTypeHeader = this.http.getResponseHeader("content-type");
+
+    if (contentTypeHeader && contentTypeHeader.match("json")) {
+      return JSON.parse(this.http.responseText);
+    } else {
+      return this.http.responseText;
+    }
+  };
+
+  AjaxRequest.prototype.open = function () {
+    this.http.open(this.method, this.url);
+  };
+
+  AjaxRequest.prototype.setRequestHeaders = function () {
     if (this.method === "POST") {
       this.http.setRequestHeader("Content-Type", this.contentType);
     }
@@ -93,13 +111,7 @@
     }
   };
 
-  RequestHandler.prototype.parseResponse = function () {
-    var contentTypeHeader = this.http.getResponseHeader("content-type");
-
-    if (contentTypeHeader && contentTypeHeader.match("json")) {
-      return JSON.parse(this.http.responseText);
-    } else {
-      return this.http.responseText;
-    }
+  AjaxRequest.prototype.send = function () {
+    this.http.send(this.data);
   };
 })(this);

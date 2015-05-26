@@ -1,7 +1,7 @@
 (function (root) {
-  var $$ = root.$$;
+  var dollabill = root.dollabill;
 
-  $$.ajax = function (options) {
+  dollabill.ajax = function (options) {
     var defaults = {
       success: function () {},
       error: function () {},
@@ -11,13 +11,13 @@
       contentType: "application/x-www-form-urlencoded; charset=UTF-8"
     };
 
-    options = $$.extend({}, defaults, options);
+    options = dollabill.extend({}, defaults, options);
     return new AjaxRequest(options);
   };
 
 
   var AjaxRequest = function (options) {
-    $$.extend(this, options);
+    dollabill.extend(this, options);
 
     this.http = new XMLHttpRequest();
     this.method = this.method.toUpperCase();

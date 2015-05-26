@@ -1,7 +1,7 @@
 (function (root) {
-  var $$ = root.$$;
-  var HTMLParser = $$.HTMLParser;
-  var DOMNodeCollection = $$.DOMNodeCollection;
+  var dollabill = root.dollabill;
+  var HTMLParser = dollabill.HTMLParser;
+  var DOMNodeCollection = dollabill.DOMNodeCollection;
 
   HTMLParser.TAGCAPTURE = /<(.+)>/;
 

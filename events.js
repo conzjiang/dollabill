@@ -1,6 +1,6 @@
 (function (root) {
-  var $$ = root.$$;
-  var DOMNodeCollection = $$.DOMNodeCollection;
+  var dollabill = root.dollabill;
+  var DOMNodeCollection = dollabill.DOMNodeCollection;
 
   DOMNodeCollection.prototype.events = [];
 

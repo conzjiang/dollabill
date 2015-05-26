@@ -1,6 +1,6 @@
 (function (root) {
-  var $$ = root.$$;
-  var DOMNodeCollection = $$.DOMNodeCollection;
+  var dollabill = root.dollabill
+  var DOMNodeCollection = dollabill.DOMNodeCollection;
 
   DOMNodeCollection.prototype.addClass = function (className) {
     this.each(function () {
@@ -22,7 +22,7 @@
         var parentEl;
 
         if (selector instanceof HTMLElement) {
-          $$(selector).remove();
+          dollabill(selector).remove();
           this.appendChild(selector.cloneNode(true));
         } else if (typeof selector === "string") {
           this.innerHTML += selector;
@@ -103,7 +103,7 @@
   };
 
   DOMNodeCollection.prototype.first = function () {
-    return $$(this.els[0]);
+    return dollabill(this.els[0]);
   };
 
   DOMNodeCollection.prototype.hasClass = function (className) {

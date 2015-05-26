@@ -1,5 +1,5 @@
 (function (root) {
-  var $$ = root.$$ = function (selector) {
+  var dollabill = root.dollabill = function (selector) {
     if (typeof selector === "string") {
       return new HTMLParser(selector).el;
     } else if (selector instanceof HTMLElement) {
@@ -15,7 +15,7 @@
     }
   };
 
-  var HTMLParser = $$.HTMLParser = function (selector) {
+  var HTMLParser = dollabill.HTMLParser = function (selector) {
     this.selector = selector;
 
     if (this.selector.match(HTMLParser.TAGCAPTURE)) {
@@ -25,12 +25,12 @@
     }
   };
 
-  var DOMNodeCollection = $$.DOMNodeCollection = function (els) {
+  var DOMNodeCollection = dollabill.DOMNodeCollection = function (els) {
     this.els = els;
     this.length = this.els.length;
   };
 
-  $$.extend = function (object) {
+  dollabill.extend = function (object) {
     var toMerge = Array.prototype.slice.call(arguments, 1);
 
     toMerge.forEach(function (options) {

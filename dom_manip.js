@@ -15,13 +15,17 @@
       var that = this;
 
       selector.each(function () {
-        this.parentElement && this.parentElement.removeChild(this);
         that.append(this);
       });
     } else {
       this.each(function () {
+        var parentEl;
+
         if (selector instanceof HTMLElement) {
-          this.appendChild(selector);
+          parentEl = selector.parentElement;
+          parentEl && parentEl.removeChild(selector);
+
+          this.appendChild(selector.cloneNode(true));
         } else if (typeof selector === "string") {
           this.innerHTML += selector;
         }

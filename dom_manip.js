@@ -22,9 +22,7 @@
         var parentEl;
 
         if (selector instanceof HTMLElement) {
-          parentEl = selector.parentElement;
-          parentEl && parentEl.removeChild(selector);
-
+          $$(selector).remove();
           this.appendChild(selector.cloneNode(true));
         } else if (typeof selector === "string") {
           this.innerHTML += selector;
@@ -43,11 +41,9 @@
 
       return this;
     } else if (typeof attr === "object") {
-      this.each(function () {
-        for (var key in attr) {
-          this.setAttribute(key, attr[key]);
-        }
-      });
+      for (var key in attr) {
+        this.attr(key, attr[key]);
+      }
 
       return this;
     } else {
@@ -87,6 +83,10 @@
     return this;
   };
 
+  DOMNodeCollection.prototype.eq = function (index) {
+    return new DOMNodeCollection([this.els[index]]);
+  };
+
   DOMNodeCollection.prototype.find = function (selector) {
     var found = [];
 
@@ -104,6 +104,16 @@
 
   DOMNodeCollection.prototype.first = function () {
     return $$(this.els[0]);
+  };
+
+  DOMNodeCollection.prototype.hasClass = function (className) {
+    for (var i = 0; i < this.length; i++) {
+      if (this.els[i].classList.contains(className)) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   DOMNodeCollection.prototype.html = function (html) {
@@ -132,7 +142,7 @@
 
   DOMNodeCollection.prototype.remove = function () {
     this.each(function () {
-      this.parentElement.removeChild(this);
+      this.parentElement && this.parentElement.removeChild(this);
     });
   };
 
@@ -146,6 +156,14 @@
         this.className = "";
       });
     }
+
+    return this;
+  };
+
+  DOMNodeCollection.prototype.toggleClass = function (className) {
+    this.each(function () {
+      this.classList.toggle(className);
+    });
 
     return this;
   };

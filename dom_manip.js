@@ -128,6 +128,39 @@
     }
   };
 
+  DOMNodeCollection.prototype.is = function (selector) {
+    if (selector[0] === ".") {
+      var className = selector.slice(1);
+      return this.hasClass(className);
+    } else if (selector[0] === "#") {
+      var id = selector.slice(1);
+      return this._hasId(id);
+    } else {
+      var tag = selector.toUpperCase();
+      return this._isTag(tag);
+    }
+  };
+
+  DOMNodeCollection.prototype._hasId = function (id) {
+    for (var i = 0; i < this.length; i++) {
+      if (this.els[i].id === id) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  DOMNodeCollection.prototype._isTag = function (tag) {
+    for (var i = 0; i < this.length; i++) {
+      if (this.els[i].tagName === tag) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   DOMNodeCollection.prototype.parent = function () {
     var parents = [];
 

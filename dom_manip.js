@@ -15,13 +15,13 @@
       var that = this;
 
       selector.each(function () {
-        that.append(this.cloneNode(true));
-        this.parentElement.removeChild(this);
+        this.parentElement && this.parentElement.removeChild(this);
+        that.append(this);
       });
     } else {
       this.each(function () {
         if (selector instanceof HTMLElement) {
-          this.appendChild(selector.cloneNode(true));
+          this.appendChild(selector);
         } else if (typeof selector === "string") {
           this.innerHTML += selector;
         }
@@ -35,6 +35,14 @@
     if (value) {
       this.each(function () {
         this.setAttribute(attr, value);
+      });
+
+      return this;
+    } else if (typeof attr === "object") {
+      this.each(function () {
+        for (var key in attr) {
+          this.setAttribute(key, attr[key]);
+        }
       });
 
       return this;

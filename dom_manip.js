@@ -69,6 +69,14 @@
     return new DOMNodeCollection(allChildren);
   };
 
+  DOMNodeCollection.prototype.closest = function (selector) {
+    if (this.parent().length === 0 || this.parent().is(selector)) {
+      return this.parent();
+    } else {
+      return this.parent().closest(selector);
+    }
+  };
+
   DOMNodeCollection.prototype.each = function (callback) {
     this.els.forEach(function (el, i) {
       callback.call(el, i);

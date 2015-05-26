@@ -1,5 +1,5 @@
 (function (root) {
-  var dollabill = root.dollabill
+  var dollabill = root.dollabill;
   var DOMNodeCollection = dollabill.DOMNodeCollection;
 
   DOMNodeCollection.prototype.addClass = function (className) {
@@ -173,7 +173,7 @@
     var parents = [];
 
     this.each(function () {
-      if (parents.indexOf(this.parentElement) === -1) {
+      if (this.parentElement && parents.indexOf(this.parentElement) === -1) {
         parents.push(this.parentElement);
       }
     });

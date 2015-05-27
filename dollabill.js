@@ -28,6 +28,39 @@
   var DOMNodeCollection = dollabill.DOMNodeCollection = function (els) {
     this.els = els;
     this.length = this.els.length;
+
+    if (this.length === 1) { this.parseData(); }
+  };
+
+  var BRACKETS = /^\[.*\]$|^\{.*\}$/;
+
+  var parseValue = function (value) {
+    if (value.match(BRACKETS)) {
+      return JSON.parse(value);
+    } else if (parseInt(value)) {
+      return parseInt(value);
+    } else {
+      return value;
+    }
+  };
+
+  DOMNodeCollection.prototype.parseData = function () {
+    var data = {};
+    var el = this.els[0];
+    var attrs = el.attributes;
+    var attrsLength = attrs.length;
+    var match, key, attr;
+
+    for (var i = 0; i < attrsLength; i++) {
+      key = attrs[i].nodeName;
+      match = key.match(/^data-(\w+)/);
+      if (match) {
+        attr = match[1];
+        data[attr] = parseValue(el.getAttribute(key));
+      }
+    }
+
+    this.data = data;
   };
 
   dollabill.extend = function (object) {

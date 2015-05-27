@@ -60,7 +60,7 @@
       }
     }
 
-    this.data = data;
+    this._data = data;
   };
 
   dollabill.extend = function (object) {

@@ -7,14 +7,16 @@ I decided to try my hand at implementing jQuery from scratch as a way to learn v
 - `toggleClass`
 - `hasClass`
 - `is`
-- `html/empty`
+- `html`/`empty`
 - `first`
 - `eq`
 - `find`
-- `parent/children`
+- `parent`/`children`
 - `closest`
 - `append`
 - `remove`
+- `attr`
+- `data`
 
 ## _dollabill_ events (events.js)
 - `on`

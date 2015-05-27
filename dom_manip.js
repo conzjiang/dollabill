@@ -77,6 +77,22 @@
     }
   };
 
+  DOMNodeCollection.prototype.data = function (attr, value) {
+    if (value) {
+      this._data[attr] = value;
+      this.attr("data-" + attr, value);
+      return this;
+    } else if (typeof attr === "object") {
+      for (var key in attr) {
+        this.data(key, attr[key]);
+      }
+
+      return this;
+    } else {
+      return this._data[attr];
+    }
+  };
+
   DOMNodeCollection.prototype.each = function (callback) {
     this.els.forEach(function (el, i) {
       callback.call(el, i);

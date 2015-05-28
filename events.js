@@ -83,7 +83,11 @@
       var eventHandler = events[i];
       if (!eventHandler) return;
 
-      eventHandler.removeEventListener(event);
+      if (event) {
+        eventHandler.removeEventListener(event);
+      } else {
+        eventHandler.removeAll();
+      }
     });
 
     return this;
@@ -106,6 +110,12 @@
     }.bind(this));
 
     this.events[event] = [];
+  };
+
+  EventHandler.prototype.removeAll = function () {
+    for (var event in this.events) {
+      this.removeEventListener(event);
+    }
   };
 
   EventHandler.prototype.getHandlers = function (event) {

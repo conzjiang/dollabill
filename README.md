@@ -29,3 +29,6 @@ I decided to try my hand at implementing jQuery from scratch as a way to learn v
 # TODO
 - Allow for event namespacing
 - Ideally, when appending, allow original reference to dollabill object to persist on the page somewhere
+- Events#off - best way to handle turning off delegated events?
+- Better organize event handlers
+

@@ -4,6 +4,17 @@
 
   var Event = dollabill.Event = function (event) {
     dollabill.extend(this, event);
+    this.setEventFuncs(event);
+  };
+
+  Event.prototype.setEventFuncs = function (e) {
+    this.preventDefault = function () {
+      e.preventDefault && e.preventDefault();
+    };
+
+    this.stopPropagation = function () {
+      e.stopPropagation && e.stopPropagation();
+    };
   };
 
   DOMNodeCollection.prototype.events = [];

@@ -4,7 +4,10 @@
 
   var Event = dollabill.Event = function (event) {
     dollabill.extend(this, event);
-    this.setEventFuncs(event);
+
+    if (!(event instanceof Event)) {
+      this.setEventFuncs(event);
+    }
   };
 
   Event.prototype.setEventFuncs = function (e) {
@@ -21,33 +24,41 @@
 
   DOMNodeCollection.prototype.on = function () {
     if (arguments.length === 2) {
-      this.addListener(arguments[0], arguments[1]);
+      var event = arguments[0];
+      var handler = arguments[1];
+
+      this.addListener(event, handler);
     } else if (arguments.length === 3) {
       var selector = arguments[0];
       var event = arguments[1];
       var handler = arguments[2];
-      var that = this;
 
-      this.addListener(event, function (e) {
-        var $target = dollabill(e.target);
-        var dollaEvent = new Event(e);
-        dollaEvent.delegateTarget = that.els[0];
-
-        if ($target.is(selector)) {
-          dollaEvent.currentTarget = e.target;
-          handler.call(e.target, dollaEvent);
-        } else {
-          var $parent = $target.closest(selector);
-
-          if ($parent.length > 0) {
-            dollaEvent.currentTarget = $parent.els[0];
-            handler.call(dollaEvent.currentTarget, dollaEvent);
-          }
-        }
-      });
+      this.delegate(selector, event, handler);
     }
 
     return this;
+  };
+
+  DOMNodeCollection.prototype.delegate = function (selector, event, handler) {
+    var that = this;
+
+    this.addListener(event, function (e) {
+      var $target = dollabill(e.target);
+      var dollaEvent = new Event(e);
+      dollaEvent.delegateTarget = that.els[0];
+
+      if ($target.is(selector)) {
+        dollaEvent.currentTarget = e.target;
+        handler.call(dollaEvent.currentTarget, dollaEvent);
+      } else {
+        var $parent = $target.closest(selector);
+
+        if ($parent.length > 0) {
+          dollaEvent.currentTarget = $parent.els[0];
+          handler.call(dollaEvent.currentTarget, dollaEvent);
+        }
+      }
+    });
   };
 
   DOMNodeCollection.prototype.addListener = function (event, handler) {

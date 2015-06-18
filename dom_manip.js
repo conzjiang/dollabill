@@ -33,21 +33,28 @@
     return this;
   };
 
-  DOMNodeCollection.prototype.attr = function (attr, value) {
-    if (value) {
+  DOMNodeCollection.prototype.attr = function () {
+    if (arguments.length === 1) {
+      var attr = arguments[0];
+
+      if (typeof attr === "object") {
+        for (var key in attr) {
+          this.attr(key, attr[key]);
+        }
+
+        return this;
+      } else {
+        return this.els[0].getAttribute(attr);
+      }
+    } else if (arguments.length === 2) {
+      var attr = arguments[0];
+      var value = arguments[1];
+
       this.each(function () {
         this.setAttribute(attr, value);
       });
 
       return this;
-    } else if (typeof attr === "object") {
-      for (var key in attr) {
-        this.attr(key, attr[key]);
-      }
-
-      return this;
-    } else {
-      return this.els[0].getAttribute(attr);
     }
   };
 

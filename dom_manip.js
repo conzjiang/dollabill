@@ -141,7 +141,7 @@
   };
 
   DOMNodeCollection.prototype.html = function (html) {
-    if (html) {
+    if (typeof html !== 'undefined') {
       this.each(function () {
         this.innerHTML = html;
       });

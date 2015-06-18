@@ -77,6 +77,25 @@
     }
   };
 
+  DOMNodeCollection.prototype.css = function () {
+    if (arguments.length === 1) {
+      var styles = arguments[0];
+
+      for (var style in styles) {
+        this.css(style, styles[style]);
+      }
+    } else if (arguments.length === 2) {
+      var style = arguments[0];
+      var value = arguments[1];
+
+      this.each(function () {
+        this.style[style] = value;
+      });
+    }
+
+    return this;
+  };
+
   DOMNodeCollection.prototype.data = function (attr, value) {
     if (value) {
       this._data[attr] = value;

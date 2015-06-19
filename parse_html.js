@@ -39,16 +39,16 @@
     var tagParts = snippet.split(" ");
     return {
       tag: tagParts.shift(),
-      attrs: this.getAttrs(tagParts)
+      attrs: HTMLParser.getAttrs(tagParts)
     };
   };
 
-  HTMLParser.prototype.getAttrs = function (snippet) {
+  HTMLParser.getAttrs = function (snippet) {
     var attrs = {};
 
     snippet.forEach(function (attr) {
       var parts = attr.split("=");
-      attrs[parts[0]] = /^\"?(\w+)\"?$/.exec(parts[1])[1];
+      attrs[parts[0]] = /^(\"|\')?(\w+)(\"|\')?$/.exec(parts[1])[2];
     });
 
     return attrs;

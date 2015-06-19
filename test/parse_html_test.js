@@ -43,5 +43,15 @@
         expect(attrs).to.eql({ action: "localhost", method: "post" });
       });
     });
+
+    describe("::splitTag", function () {
+      it("splits an HTML tag snippet into its two parts",function () {
+        var parts = HTMLParser.splitTag("div id='main'");
+        expect(parts).to.eql({
+          tag: "div",
+          attrs: { id: "main" }
+        });
+      });
+    });
   });
 })();

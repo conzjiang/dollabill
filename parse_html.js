@@ -22,10 +22,11 @@
       snippet = this.selector.slice(1, -closingTag.length);
       tagIdx = snippet.indexOf(">");
 
-      tagParts = this.splitTag(snippet.slice(0, tagIdx));
+      tagParts = HTMLParser.splitTag(snippet.slice(0, tagIdx));
       innerHTML = snippet.slice(tagIdx + 1);
     } else {
-      tagParts = this.splitTag(this.selector.match(HTMLParser.TAGCAPTURE)[1]);
+      snippet = this.selector.match(HTMLParser.TAGCAPTURE)[1];
+      tagParts = HTMLParser.splitTag(snippet);
     }
 
     return {
@@ -35,7 +36,7 @@
     };
   };
 
-  HTMLParser.prototype.splitTag = function (snippet) {
+  HTMLParser.splitTag = function (snippet) {
     var tagParts = snippet.split(" ");
     return {
       tag: tagParts.shift(),

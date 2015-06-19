@@ -33,31 +33,41 @@
     if (this.length === 1) { this.parseData(); }
   };
 
+  DOMNodeCollection.prototype.parseData = function () {
+    var el = this.els[0];
+    var attrs = el.attributes;
+    var attrsLength = attrs.length;
+    var key;
+
+    for (var i = 0; i < attrsLength; i++) {
+      key = attrs[i].nodeName;
+      this.setData(key, el.getAttribute(key));
+    }
+  };
+
   var BRACKETS = /^\[.*\]$|^\{.*\}$/;
+
+  var isANumber = function (value) {
+    return !isNaN(parseInt(value));
+  };
 
   var parseValue = function (value) {
     if (value.match(BRACKETS)) {
       return JSON.parse(value);
-    } else if (parseInt(value)) {
+    } else if (isANumber(value)) {
       return parseInt(value);
     } else {
       return value;
     }
   };
 
-  DOMNodeCollection.prototype.parseData = function () {
-    var el = this.els[0];
-    var attrs = el.attributes;
-    var attrsLength = attrs.length;
-    var match, key, attr;
+  DOMNodeCollection.prototype.setData = function (key, val) {
+    var match, attr;
+    match = key.match(/^data-(\w+)/);
 
-    for (var i = 0; i < attrsLength; i++) {
-      key = attrs[i].nodeName;
-      match = key.match(/^data-(\w+)/);
-      if (match) {
-        attr = match[1];
-        this._data[attr] = parseValue(el.getAttribute(key));
-      }
+    if (match) {
+      attr = match[1];
+      this._data[attr] = parseValue(val);
     }
   };
 

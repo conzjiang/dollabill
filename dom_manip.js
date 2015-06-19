@@ -54,6 +54,10 @@
         this.setAttribute(attr, value);
       });
 
+      if (this.length === 1) {
+        this.setData(attr, value);
+      }
+
       return this;
     }
   };
@@ -105,7 +109,6 @@
 
   DOMNodeCollection.prototype.data = function (attr, value) {
     if (value) {
-      this._data[attr] = value;
       this.attr("data-" + attr, value);
       return this;
     } else if (typeof attr === "object") {

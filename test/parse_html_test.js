@@ -53,5 +53,27 @@
         });
       });
     });
+
+    describe("::parseSelector", function () {
+      var parts;
+
+      it("parses angle brackets into tag, attrs, & innerHTML", function () {
+        parts = HTMLParser.parseSelector("<div id=\"grid\">");
+        expect(parts).to.eql({
+          tag: "div",
+          attrs: { id: "grid" },
+          innerHTML: undefined
+        });
+      });
+
+      it("parses selector with closing tag", function () {
+        parts = HTMLParser.parseSelector("<div id=grid>fun timez</div>");
+        expect(parts).to.eql({
+          tag: "div",
+          attrs: { id: "grid" },
+          innerHTML: "fun timez"
+        });
+      });
+    });
   });
 })();

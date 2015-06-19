@@ -5,27 +5,18 @@
 
   HTMLParser.TAGCAPTURE = /<(.+)>/;
 
-  HTMLParser.prototype.createEl = function () {
-    var tagParts = this.parseSelector();
-    var element = document.createElement(tagParts.tag);
-
-    this.el = new DOMNodeCollection([element]);
-    this.el.attr(tagParts.attrs);
-    if (tagParts.innerHTML) this.el.html(tagParts.innerHTML);
-  };
-
-  HTMLParser.prototype.parseSelector = function () {
+  HTMLParser.parseSelector = function (selector) {
     var match, closingTag, snippet, tagIdx, tagParts, innerHTML;
 
-    if (match = this.selector.match(/<\/\w+>$/)) {
+    if (match = selector.match(/<\/\w+>$/)) {
       closingTag = match[0];
-      snippet = this.selector.slice(1, -closingTag.length);
+      snippet = selector.slice(1, -closingTag.length);
       tagIdx = snippet.indexOf(">");
 
       tagParts = HTMLParser.splitTag(snippet.slice(0, tagIdx));
       innerHTML = snippet.slice(tagIdx + 1);
     } else {
-      snippet = this.selector.match(HTMLParser.TAGCAPTURE)[1];
+      snippet = selector.match(HTMLParser.TAGCAPTURE)[1];
       tagParts = HTMLParser.splitTag(snippet);
     }
 
@@ -53,6 +44,15 @@
     });
 
     return attrs;
+  };
+
+  HTMLParser.prototype.createEl = function () {
+    var tagParts = HTMLParser.parseSelector(this.selector);
+    var element = document.createElement(tagParts.tag);
+
+    this.el = new DOMNodeCollection([element]);
+    this.el.attr(tagParts.attrs);
+    if (tagParts.innerHTML) this.el.html(tagParts.innerHTML);
   };
 
   HTMLParser.prototype.getEl = function () {

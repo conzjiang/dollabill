@@ -129,19 +129,29 @@
     });
 
     describe("#createEl", function () {
-      it("parses its selector", function () {
-        var parseSelector;
-
+      beforeEach(function () {
         parser = new HTMLParser("<div>");
-        parseSelector = chai.spy.on(parser, "parseSelector");
+      });
 
+      it("parses its selector", function () {
+        var parseSelector = chai.spy.on(parser, "parseSelector");
         parser.createEl();
 
         expect(parseSelector).to.have.been.called();
       });
 
       it("creates a new HTML element with the correct tag", function () {
+        var createElement = chai.spy.on(document, "createElement");
+        parser.createEl();
 
+        expect(createElement).to.have.been.called.with("div");
+      });
+
+      it("sets its el to a new DOMNodeCollection", function () {
+        var DOMNodeCollection = dollabill.DOMNodeCollection;
+        parser.createEl();
+
+        expect(parser.el).to.be.instanceof(DOMNodeCollection);
       });
     });
   });

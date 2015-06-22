@@ -155,6 +155,38 @@
       });
     });
 
+    describe("#applyAttrs", function () {
+      beforeEach(function () {
+        parser = new HTMLParser();
+        parser.el = { attr: function(){}, html: function(){} };
+      });
+
+      it("sets its attrs to its el", function () {
+        var attr = chai.spy.on(parser.el, "attr");
+        parser.attrs = { title: "fun" };
+        parser.applyAttrs();
+
+        expect(attr).to.have.been.called.with({ title: "fun" });
+      });
+
+      it("sets innerHTML if it has innerHTML", function () {
+        var html = chai.spy.on(parser.el, "html");
+        parser.innerHTML = "cool";
+        sinon.stub(parser.el, "attr");
+        parser.applyAttrs();
+
+        expect(html).to.have.been.called.with("cool");
+      });
+
+      it("doesn't set innerHTML if no innerHTML", function () {
+        var html = chai.spy.on(parser.el, "html");
+        sinon.stub(parser.el, "attr");
+        parser.applyAttrs();
+
+        expect(html).not.to.have.been.called();
+      });
+    });
+
     describe("#getEl", function () {
       beforeEach(function () {
         parser = new HTMLParser("div");

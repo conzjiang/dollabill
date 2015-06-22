@@ -161,29 +161,40 @@
         parser.el = { attr: function(){}, html: function(){} };
       });
 
-      it("sets its attrs to its el", function () {
-        var attr = chai.spy.on(parser.el, "attr");
-        parser.attrs = { title: "fun" };
-        parser.applyAttrs();
+      describe("attributes", function () {
+        it("sets its attrs to its el if it has attrs", function () {
+          var attr = chai.spy.on(parser.el, "attr");
+          parser.attrs = { title: "fun" };
+          parser.applyAttrs();
 
-        expect(attr).to.have.been.called.with({ title: "fun" });
+          expect(attr).to.have.been.called.with({ title: "fun" });
+        });
+
+        it("doesn't set attrs if no attrs", function () {
+          var attr = chai.spy.on(parser.el, "attr");
+          parser.applyAttrs();
+
+          expect(attr).not.to.have.been.called();
+        });
       });
 
-      it("sets innerHTML if it has innerHTML", function () {
-        var html = chai.spy.on(parser.el, "html");
-        parser.innerHTML = "cool";
-        sinon.stub(parser.el, "attr");
-        parser.applyAttrs();
+      describe("innerHTML", function () {
+        it("sets innerHTML if it has innerHTML", function () {
+          var html = chai.spy.on(parser.el, "html");
+          parser.innerHTML = "cool";
+          sinon.stub(parser.el, "attr");
+          parser.applyAttrs();
 
-        expect(html).to.have.been.called.with("cool");
-      });
+          expect(html).to.have.been.called.with("cool");
+        });
 
-      it("doesn't set innerHTML if no innerHTML", function () {
-        var html = chai.spy.on(parser.el, "html");
-        sinon.stub(parser.el, "attr");
-        parser.applyAttrs();
+        it("doesn't set innerHTML if no innerHTML", function () {
+          var html = chai.spy.on(parser.el, "html");
+          sinon.stub(parser.el, "attr");
+          parser.applyAttrs();
 
-        expect(html).not.to.have.been.called();
+          expect(html).not.to.have.been.called();
+        });
       });
     });
 

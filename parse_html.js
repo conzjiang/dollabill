@@ -61,8 +61,16 @@
     this.attrs = HTMLParser.getAttrs(tagParts);
   };
 
+  var isEmpty = function (obj) {
+    for (var prop in obj) {
+      return false;
+    }
+
+    return true;
+  };
+
   HTMLParser.prototype.applyAttrs = function () {
-    this.el.attr(this.attrs);
+    if (!isEmpty(this.attrs)) this.el.attr(this.attrs);
     if (this.innerHTML) this.el.html(this.innerHTML);
   };
 

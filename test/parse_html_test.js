@@ -154,5 +154,25 @@
         expect(parser.el).to.be.instanceof(DOMNodeCollection);
       });
     });
+
+    describe("#getEl", function () {
+      beforeEach(function () {
+        parser = new HTMLParser("div");
+      });
+
+      it("finds the HTML elements with the matching selector", function () {
+        var querySelectorAll = chai.spy.on(document, "querySelectorAll");
+        parser.getEl();
+
+        expect(querySelectorAll).to.have.been.called.with("div");
+      });
+
+      it("sets its el to a new DOMNodeCollection", function () {
+        var DOMNodeCollection = dollabill.DOMNodeCollection;
+        parser.getEl();
+
+        expect(parser.el).to.be.instanceof(DOMNodeCollection);
+      });
+    });
   });
 })();

@@ -109,18 +109,20 @@
     });
 
     describe("#attr", function () {
+      var $el;
+
       itIsChainable("attr", "title", "fun");
 
       it("acts as a getter", function () {
         var puppies = document.getElementById("puppies");
-        var $el = new DOMNodeCollection([puppies]);
+        $el = new DOMNodeCollection([puppies]);
 
         expect($el.attr("title")).to.eql("cute");
       });
 
       describe("acts as a setter", function () {
         it("sets attribute for every element in collection", function () {
-          var $el = new DOMNodeCollection([testNode1, testNode2]);
+          $el = new DOMNodeCollection([testNode1, testNode2]);
           $el.attr("color", "blue");
 
           [testNode1, testNode2].forEach(function (node) {
@@ -129,7 +131,7 @@
         });
 
         it("handles an object as input", function () {
-          var $el = new DOMNodeCollection([testNode1]);
+          $el = new DOMNodeCollection([testNode1]);
           $el.attr({ size: "large", color: "pink" });
 
           expect(testNode1.getAttribute("size")).to.eql("large");
@@ -137,20 +139,55 @@
         });
 
         it("updates data object if collection has only one node", function () {
-          var $el = new DOMNodeCollection([testNode1]);
-          var setData = chai.spy.on($el, "setData");
+          var setData;
+
+          $el = new DOMNodeCollection([testNode1]);
+          setData = chai.spy.on($el, "setData");
           $el.attr("data-id", 4);
 
           expect(setData).to.be.called.with("data-id", 4);
         });
 
         it("doesn't update data object if more than one node", function () {
-          var $el = new DOMNodeCollection([testNode1, testNode2]);
-          var setData = chai.spy.on($el, "setData");
+          var setData;
+
+          $el = new DOMNodeCollection([testNode1, testNode2]);
+          setData = chai.spy.on($el, "setData");
           $el.attr("data-id", 4);
 
           expect(setData).not.to.be.called();
         });
+      });
+    });
+
+    describe("#children", function () {
+      var $el, $children;
+
+      itIsChainable("children");
+
+      it("collects every element's children in a new collection", function () {
+        testNode1.innerHTML = "<h1>hi</h1>";
+        testNode2.innerHTML = "<h1>hello</h1><h1>hola</h1>";
+
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+        $children = $el.children();
+
+        expect($children.length).to.eql(3);
+        expect($children.els.every(function (child) {
+          return child.tagName === "H1";
+        })).to.be.true;
+      });
+
+      it("collects nested children", function () {
+        testNode1.innerHTML = "<ul><li></li><li></li></ul>";
+
+        $el = new DOMNodeCollection([testNode1]);
+        $children = $el.children();
+
+        expect($children.length).to.eql(3);
+        expect($children.els.map(function (child) {
+          return child.tagName;
+        })).to.eql(["UL", "LI", "LI"]);
       });
     });
   });

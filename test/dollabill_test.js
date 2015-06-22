@@ -1,7 +1,50 @@
 (function () {
   var expect = chai.expect;
+  var DOMNodeCollection = dollabill.DOMNodeCollection;
 
   describe("dollabill", function () {
+    describe("constructor", function () {
+      var $el;
+
+      describe("handles string input", function () {
+        it("with angle brackets", function () {
+          $el = dollabill("<div>");
+          expect($el).to.be.an.instanceof(DOMNodeCollection);
+          expect($el.els[0].tagName).to.eql("DIV");
+        });
+
+        it("with CSS selector", function () {
+          $el = dollabill(".title");
+          expect($el).to.be.an.instanceof(DOMNodeCollection);
+          expect($el.els[0].className).to.eql("title");
+        });
+      });
+
+      it("handles HTML elements", function () {
+        var htmlEl = document.getElementById("test-palette");
+        $el = dollabill(htmlEl);
+        expect($el).to.be.an.instanceof(DOMNodeCollection);
+        expect($el.els[0]).to.eql(htmlEl);
+      });
+
+      it("handles functions", function () {
+        var holdover = function(){};
+        document.onreadystatechange = holdover;
+
+        dollabill(function () {
+          console.log("hi");
+        });
+
+        expect(document.onreadystatechange).not.to.eql(holdover);
+      });
+
+      it("returns an empty DOMNodeCollection by default", function () {
+        var $el = dollabill(1);
+        expect($el).to.be.an.instanceof(DOMNodeCollection);
+        expect($el.els).to.be.empty;
+      });
+    });
+
     describe("::extend", function () {
       it("adds properties of second object to first object", function () {
         var extended = dollabill.extend({ a: 1 }, { b: 2 });
@@ -26,7 +69,6 @@
   });
 
   describe("DOMNodeCollection", function () {
-    var DOMNodeCollection = dollabill.DOMNodeCollection;
     var nodes;
 
     describe("constructor", function () {

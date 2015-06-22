@@ -151,7 +151,7 @@
         var DOMNodeCollection = dollabill.DOMNodeCollection;
         parser.createEl();
 
-        expect(parser.el).to.be.instanceof(DOMNodeCollection);
+        expect(parser.el).to.be.an.instanceof(DOMNodeCollection);
       });
     });
 
@@ -214,7 +214,7 @@
         var DOMNodeCollection = dollabill.DOMNodeCollection;
         parser.getEl();
 
-        expect(parser.el).to.be.instanceof(DOMNodeCollection);
+        expect(parser.el).to.be.an.instanceof(DOMNodeCollection);
       });
     });
   });

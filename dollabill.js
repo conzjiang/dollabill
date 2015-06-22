@@ -48,10 +48,10 @@
   };
 
   var parseValue = function (value) {
-    if (value.match(BRACKETS)) {
-      return JSON.parse(value);
-    } else if (isANumber(value)) {
+    if (isANumber(value)) {
       return parseInt(value);
+    } else if (value.match && value.match(BRACKETS)) {
+      return JSON.parse(value);
     } else {
       return value;
     }

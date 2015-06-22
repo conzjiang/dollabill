@@ -107,5 +107,51 @@
         });
       });
     });
+
+    describe("#attr", function () {
+      itIsChainable("attr", "title", "fun");
+
+      it("acts as a getter", function () {
+        var puppies = document.getElementById("puppies");
+        var $el = new DOMNodeCollection([puppies]);
+
+        expect($el.attr("title")).to.eql("cute");
+      });
+
+      describe("acts as a setter", function () {
+        it("sets attribute for every element in collection", function () {
+          var $el = new DOMNodeCollection([testNode1, testNode2]);
+          $el.attr("color", "blue");
+
+          [testNode1, testNode2].forEach(function (node) {
+            expect(node.getAttribute("color")).to.eql("blue");
+          });
+        });
+
+        it("handles an object as input", function () {
+          var $el = new DOMNodeCollection([testNode1]);
+          $el.attr({ size: "large", color: "pink" });
+
+          expect(testNode1.getAttribute("size")).to.eql("large");
+          expect(testNode1.getAttribute("color")).to.eql("pink");
+        });
+
+        it("updates data object if collection has only one node", function () {
+          var $el = new DOMNodeCollection([testNode1]);
+          var setData = chai.spy.on($el, "setData");
+          $el.attr("data-id", 4);
+
+          expect(setData).to.be.called.with("data-id", 4);
+        });
+
+        it("doesn't update data object if more than one node", function () {
+          var $el = new DOMNodeCollection([testNode1, testNode2]);
+          var setData = chai.spy.on($el, "setData");
+          $el.attr("data-id", 4);
+
+          expect(setData).not.to.be.called();
+        });
+      });
+    });
   });
 })();

@@ -5,12 +5,26 @@
   describe("DOM manipulation", function () {
     var testNode1, testNode2;
 
+    var itIsChainable = function () {
+      var method = arguments[0];
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      it("is chainable", function () {
+        var $el = new DOMNodeCollection([testNode1]);
+        var methodCall = $el[method].apply($el, args);
+
+        expect(methodCall).to.be.an.instanceof(DOMNodeCollection);
+      });
+    };
+
     beforeEach(function () {
       testNode1 = document.createElement("div");
       testNode2 = document.createElement("div");
     });
 
     describe("#addClass", function () {
+      itIsChainable("addClass", "fun");
+
       it("adds class to every element in collection", function () {
         var $el = new DOMNodeCollection([testNode1, testNode2]);
         $el.addClass("fun");
@@ -30,6 +44,8 @@
     });
 
     describe("#append", function () {
+      itIsChainable("append", "hi");
+
       it("injects the given HTML to the end of every element", function () {
         var $el = new DOMNodeCollection([testNode1, testNode2]);
 

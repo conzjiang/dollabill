@@ -5,36 +5,6 @@
 
   HTMLParser.TAGCAPTURE = /<(.+)>/;
 
-  HTMLParser.parseSelector = function (selector) {
-    var match, closingTag, snippet, tagIdx, tagParts, innerHTML;
-
-    if (match = selector.match(/<\/\w+>$/)) {
-      closingTag = match[0];
-      snippet = selector.slice(1, -closingTag.length);
-      tagIdx = snippet.indexOf(">");
-
-      tagParts = HTMLParser.splitTag(snippet.slice(0, tagIdx));
-      innerHTML = snippet.slice(tagIdx + 1);
-    } else {
-      snippet = selector.match(HTMLParser.TAGCAPTURE)[1];
-      tagParts = HTMLParser.splitTag(snippet);
-    }
-
-    return {
-      tag: tagParts.tag,
-      attrs: tagParts.attrs,
-      innerHTML: innerHTML
-    };
-  };
-
-  HTMLParser.splitTag = function (snippet) {
-    var tagParts = snippet.split(" ");
-    return {
-      tag: tagParts.shift(),
-      attrs: HTMLParser.getAttrs(tagParts)
-    };
-  };
-
   HTMLParser.getAttrs = function (snippet) {
     var attrs = {};
 
@@ -46,13 +16,54 @@
     return attrs;
   };
 
-  HTMLParser.prototype.createEl = function () {
-    var tagParts = HTMLParser.parseSelector(this.selector);
-    var element = document.createElement(tagParts.tag);
+  HTMLParser.prototype.generateEl = function () {
+    if (this.selector.match(HTMLParser.TAGCAPTURE)) {
+      this.createEl();
+      this.applyAttrs();
+    } else {
+      this.getEl();
+    }
+  };
 
+  HTMLParser.prototype.createEl = function () {
+    var element;
+
+    this.parseSelector();
+    element = document.createElement(this.tag);
     this.el = new DOMNodeCollection([element]);
-    this.el.attr(tagParts.attrs);
-    if (tagParts.innerHTML) this.el.html(tagParts.innerHTML);
+  };
+
+  HTMLParser.prototype.parseSelector = function () {
+    var match, snippet;
+
+    if (match = this.selector.match(/<\/\w+>$/)) {
+      this.extractInnerHTML(match[0]);
+    } else {
+      snippet = this.selector.match(HTMLParser.TAGCAPTURE)[1];
+      this.splitTag(snippet);
+    }
+  };
+
+  HTMLParser.prototype.extractInnerHTML = function (closingTag) {
+    var snippet, tagIdx;
+
+    snippet = this.selector.slice(1, -closingTag.length);
+    tagIdx = snippet.indexOf(">");
+
+    this.splitTag(snippet.slice(0, tagIdx));
+    this.innerHTML = snippet.slice(tagIdx + 1);
+  };
+
+  HTMLParser.prototype.splitTag = function (snippet) {
+    var tagParts = snippet.split(" ");
+
+    this.tag = tagParts.shift();
+    this.attrs = HTMLParser.getAttrs(tagParts);
+  };
+
+  HTMLParser.prototype.applyAttrs = function () {
+    this.el.attr(this.attrs);
+    if (this.innerHTML) this.el.html(this.innerHTML);
   };
 
   HTMLParser.prototype.getEl = function () {

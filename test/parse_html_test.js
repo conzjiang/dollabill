@@ -5,23 +5,10 @@
     var HTMLParser = dollabill.HTMLParser;
     var parser;
 
-    beforeEach(function () {
-      parser = {};
-    });
-
     describe("constructor", function () {
-      it("creates an HTML element if passed angle brackets tag", function () {
-        var createEl = chai.spy.on(parser, "createEl");
-        HTMLParser.call(parser, "<div>");
-
-        expect(createEl).to.have.been.called();
-      });
-
-      it("grabs an existing HTML element if no angle brackets", function () {
-        var getEl = chai.spy.on(parser, "getEl");
-        HTMLParser.call(parser, "div");
-
-        expect(getEl).to.have.been.called();
+      it("sets the given selector as the selector", function () {
+        parser = new HTMLParser("div");
+        expect(parser.selector).to.eql("div");
       });
     });
 
@@ -44,35 +31,117 @@
       });
     });
 
-    describe("::splitTag", function () {
-      it("splits an HTML tag snippet into its two parts",function () {
-        var parts = HTMLParser.splitTag("div id='main'");
-        expect(parts).to.eql({
-          tag: "div",
-          attrs: { id: "main" }
+    describe("#generateEl", function () {
+      describe("selector with angle brackets", function () {
+        beforeEach(function () {
+          parser = new HTMLParser("<div>");
         });
+
+        it("calls #createEl", function () {
+          var createEl = chai.spy.on(parser, "createEl");
+          sinon.stub(parser, "applyAttrs");
+          parser.generateEl();
+
+          expect(createEl).to.have.been.called();
+        });
+
+        it("calls #applyAttrs", function () {
+          var originalApplyAttrs, applyAttrs;
+
+          originalApplyAttrs = parser.applyAttrs.bind(parser);
+          parser.applyAttrs = function(){};
+
+          applyAttrs = chai.spy.on(parser, "applyAttrs");
+          sinon.stub(parser, "createEl");
+          parser.generateEl();
+
+          expect(applyAttrs).to.have.been.called();
+          parser.applyAttrs = originalApplyAttrs;
+        });
+      });
+
+      it("calls #getEl if no angle brackets", function () {
+        var getEl;
+
+        parser = new HTMLParser("div");
+        getEl = chai.spy.on(parser, "getEl");
+
+        parser.generateEl();
+
+        expect(getEl).to.have.been.called();
       });
     });
 
-    describe("::parseSelector", function () {
-      var parts;
+    describe("#parseSelector", function () {
+      it("parses selector w/ closing tag with #extractInnerHTML", function () {
+        var extractInnerHTML;
 
-      it("parses angle brackets into tag, attrs, & innerHTML", function () {
-        parts = HTMLParser.parseSelector("<div id=\"grid\">");
-        expect(parts).to.eql({
-          tag: "div",
-          attrs: { id: "grid" },
-          innerHTML: undefined
-        });
+        parser = new HTMLParser("<div id=grid>fun timez</div>");
+        extractInnerHTML = chai.spy.on(parser, "extractInnerHTML");
+        parser.parseSelector();
+
+        expect(extractInnerHTML).to.have.been.called.with("</div>");
       });
 
-      it("parses selector with closing tag", function () {
-        parts = HTMLParser.parseSelector("<div id=grid>fun timez</div>");
-        expect(parts).to.eql({
-          tag: "div",
-          attrs: { id: "grid" },
-          innerHTML: "fun timez"
-        });
+      it("parses angle brackets with #splitTag", function () {
+        var splitTag;
+
+        parser = new HTMLParser("<div id=\"grid\">");
+        splitTag = chai.spy.on(parser, "splitTag");
+        parser.parseSelector();
+
+        expect(splitTag).to.have.been.called.with("div id=\"grid\"");
+      });
+    });
+
+    describe("#splitTag", function () {
+      it("splits an HTML tag snippet to set its tag and attrs", function () {
+        parser = new HTMLParser();
+        parser.splitTag("div id='main'");
+
+        expect(parser.tag).to.eql("div");
+        expect(parser.attrs).to.eql({ id: "main" });
+      });
+    });
+
+    describe("#extractInnerHTML", function () {
+      var splitTag;
+
+      beforeEach(function () {
+        parser = new HTMLParser("<div id='main'>fun timez</div>");
+      });
+
+      it("receives a closing tag to split selector correctly", function () {
+        splitTag = chai.spy.on(parser, "splitTag");
+        parser.extractInnerHTML("</div>");
+
+        expect(splitTag).to.have.been.called.with("div id='main'");
+      });
+
+      it("sets innerHTML", function () {
+        splitTag = parser.splitTag.bind(parser);
+        parser.splitTag = function () {};
+        parser.extractInnerHTML("</div>");
+
+        expect(parser.innerHTML).to.eql("fun timez");
+        parser.splitTag = splitTag;
+      });
+    });
+
+    describe("#createEl", function () {
+      it("parses its selector", function () {
+        var parseSelector;
+
+        parser = new HTMLParser("<div>");
+        parseSelector = chai.spy.on(parser, "parseSelector");
+
+        parser.createEl();
+
+        expect(parseSelector).to.have.been.called();
+      });
+
+      it("creates a new HTML element with the correct tag", function () {
+
       });
     });
   });

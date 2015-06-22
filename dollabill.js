@@ -1,7 +1,9 @@
 (function (root) {
   var dollabill = root.dollabill = function (selector) {
     if (typeof selector === "string") {
-      return new HTMLParser(selector).el;
+      var parser = new HTMLParser(selector);
+      parser.generateEl();
+      return parser.el;
     } else if (selector instanceof HTMLElement) {
       return new DOMNodeCollection([selector]);
     } else if (typeof selector === "function") {
@@ -17,12 +19,6 @@
 
   var HTMLParser = dollabill.HTMLParser = function (selector) {
     this.selector = selector;
-
-    if (this.selector.match(HTMLParser.TAGCAPTURE)) {
-      this.createEl();
-    } else {
-      this.getEl();
-    }
   };
 
   var DOMNodeCollection = dollabill.DOMNodeCollection = function (els) {

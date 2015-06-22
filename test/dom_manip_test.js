@@ -23,10 +23,12 @@
     });
 
     describe("#addClass", function () {
+      var $el;
+
       itIsChainable("addClass", "fun");
 
       it("adds class to every element in collection", function () {
-        var $el = new DOMNodeCollection([testNode1, testNode2]);
+        $el = new DOMNodeCollection([testNode1, testNode2]);
         $el.addClass("fun");
 
         [testNode1, testNode2].forEach(function (node) {
@@ -35,7 +37,7 @@
       });
 
       it("doesn't overwrite classes", function () {
-        var $el = new DOMNodeCollection([testNode1]);
+        $el = new DOMNodeCollection([testNode1]);
         $el.addClass("cool");
         $el.addClass("great");
 
@@ -44,15 +46,16 @@
     });
 
     describe("#append", function () {
+      var $el;
+
       itIsChainable("append", "hi");
 
       it("injects the given HTML to the end of every element", function () {
-        var $el = new DOMNodeCollection([testNode1, testNode2]);
-
         [testNode1, testNode2].forEach(function (node) {
           node.innerHTML = "welcome";
         });
 
+        $el = new DOMNodeCollection([testNode1, testNode2]);
         $el.append("<h1>cool</h1>");
 
         [testNode1, testNode2].forEach(function (node) {
@@ -61,23 +64,22 @@
       });
 
       it("appends other DNC instances", function () {
-        var $el = new DOMNodeCollection([testNode1]);
         var $toAppend = new DOMNodeCollection([testNode2]);
 
         testNode1.innerHTML = "<h1>hi</h1>";
         testNode2.innerHTML = "fun fun";
 
+        $el = new DOMNodeCollection([testNode1]);
         $el.append($toAppend);
 
         expect(testNode1.innerHTML).to.eql("<h1>hi</h1><div>fun fun</div>");
       });
 
       it("appends HTML elements", function () {
-        var $el = new DOMNodeCollection([testNode1]);
-
         testNode1.innerHTML = "<h1>hi</h1>";
         testNode2.innerHTML = "fun fun";
 
+        $el = new DOMNodeCollection([testNode1]);
         $el.append(testNode2);
 
         expect(testNode1.innerHTML).to.eql("<h1>hi</h1><div>fun fun</div>");
@@ -87,8 +89,8 @@
         var test = document.getElementById("test-palette");
         var originalHTML = test.innerHTML;
 
-        var $el = new DOMNodeCollection([testNode1]);
         var puppies = document.getElementById("puppies");
+        $el = new DOMNodeCollection([testNode1]);
         $el.append(puppies);
 
         expect(test.innerHTML).not.to.contain("puppies");
@@ -99,7 +101,7 @@
         var element = document.createElement("h1");
         element.innerHTML = "hi";
 
-        var $el = new DOMNodeCollection([testNode1, testNode2]);
+        $el = new DOMNodeCollection([testNode1, testNode2]);
         $el.append(element);
 
         [testNode1, testNode2].forEach(function (node) {

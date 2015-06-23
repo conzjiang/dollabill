@@ -32,4 +32,4 @@ I decided to try my hand at implementing jQuery from scratch as a way to learn v
 - Ideally, when appending, allow original reference to dollabill object to persist on the page somewhere
 - Events#off - best way to handle turning off delegated events?
 - Better organize event handlers
-
+- #is to take chain selectors (ex. `#main.group`)

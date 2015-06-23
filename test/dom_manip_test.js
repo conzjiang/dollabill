@@ -249,6 +249,35 @@
       });
     });
 
+    describe("#is", function () {
+      var $el;
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection([]);
+      });
+
+      it("handles class selectors", function () {
+        var hasClass = chai.spy.on($el, "hasClass");
+        $el.is(".funny");
+
+        expect(hasClass).to.be.called.with("funny");
+      });
+
+      it("handles id selectors", function () {
+        var hasId = chai.spy.on($el, "_hasId");
+        $el.is("#cool");
+
+        expect(hasId).to.be.called.with("cool");
+      });
+
+      it("handles tag names", function () {
+        var isTag = chai.spy.on($el, "_isTag");
+        $el.is("p");
+
+        expect(isTag).to.be.called.with("p");
+      });
+    });
+
     describe("#_hasId", function () {
       var $el;
 

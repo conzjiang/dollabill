@@ -163,19 +163,25 @@
     });
 
     describe("#children", function () {
-      var $el, $children;
 
       itIsChainable("children");
+
+
+
+    });
+
+    describe("#findAllChildren", function () {
+      var $el, children;
 
       it("collects every element's children in a new collection", function () {
         testNode1.innerHTML = "<h1>hi</h1>";
         testNode2.innerHTML = "<h1>hello</h1><h1>hola</h1>";
 
         $el = new DOMNodeCollection([testNode1, testNode2]);
-        $children = $el.children();
+        children = $el.findAllChildren();
 
-        expect($children.length).to.eql(3);
-        expect($children.els.every(function (child) {
+        expect(children.length).to.eql(3);
+        expect(children.every(function (child) {
           return child.tagName === "H1";
         })).to.be.true;
       });
@@ -184,10 +190,10 @@
         testNode1.innerHTML = "<ul><li></li><li></li></ul>";
 
         $el = new DOMNodeCollection([testNode1]);
-        $children = $el.children();
+        children = $el.findAllChildren();
 
-        expect($children.length).to.eql(3);
-        expect($children.els.map(function (child) {
+        expect(children.length).to.eql(3);
+        expect(children.map(function (child) {
           return child.tagName;
         })).to.eql(["UL", "LI", "LI"]);
       });

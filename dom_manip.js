@@ -62,7 +62,32 @@
     }
   };
 
-  DOMNodeCollection.prototype.children = function () {
+  DOMNodeCollection.prototype.children = function (selector) {
+    var children;
+
+    if (selector) {
+      children = this.findMatchingChildren(selector);
+    } else {
+      children = this.findAllChildren();
+    }
+
+    return new DOMNodeCollection(children);
+  };
+
+  DOMNodeCollection.prototype.findMatchingChildren = function (selector) {
+    var children = [];
+
+    this.each(function () {
+      var matchingChildren = this.querySelectorAll(selector);
+      matchingChildren = Array.prototype.slice.call(matchingChildren);
+
+      children = children.concat(matchingChildren);
+    });
+
+    return children;
+  };
+
+  DOMNodeCollection.prototype.findAllChildren = function () {
     var allChildren = [];
     var queue = this.els.slice();
 
@@ -77,7 +102,7 @@
       }
     }
 
-    return new DOMNodeCollection(allChildren);
+    return allChildren;
   };
 
   DOMNodeCollection.prototype.closest = function (selector) {

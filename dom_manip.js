@@ -66,15 +66,15 @@
     var children;
 
     if (selector) {
-      children = this.findMatchingChildren(selector);
+      children = this._findMatchingChildren(selector);
     } else {
-      children = this.findAllChildren();
+      children = this._findAllChildren();
     }
 
     return new DOMNodeCollection(children);
   };
 
-  DOMNodeCollection.prototype.findMatchingChildren = function (selector) {
+  DOMNodeCollection.prototype._findMatchingChildren = function (selector) {
     var children = [];
 
     this.each(function () {
@@ -87,7 +87,7 @@
     return children;
   };
 
-  DOMNodeCollection.prototype.findAllChildren = function () {
+  DOMNodeCollection.prototype._findAllChildren = function () {
     var allChildren = [];
     var queue = this.els.slice();
 

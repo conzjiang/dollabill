@@ -172,27 +172,27 @@
       itIsChainable("children");
 
       it("finds only the matching children if selector given", function () {
-        var findMatchingChildren = chai.spy.on($el, "findMatchingChildren");
+        var findMatchingChildren = chai.spy.on($el, "_findMatchingChildren");
         $el.children(".title");
 
         expect(findMatchingChildren).to.be.called.with(".title");
       });
 
       it("finds all the children if none given", function () {
-        var findAllChildren = chai.spy.on($el, "findAllChildren");
+        var findAllChildren = chai.spy.on($el, "_findAllChildren");
         $el.children();
 
         expect(findAllChildren).to.be.called();
       });
     });
 
-    describe("#findMatchingChildren", function () {
+    describe("#_findMatchingChildren", function () {
       it("collects only the children that match selector", function () {
         testNode1.innerHTML = "<section><h1>hi</h1></section>";
         testNode2.innerHTML = "<h1>fun</h1><h2>so fun</h2>";
 
         var $el = new DOMNodeCollection([testNode1, testNode2]);
-        var children = $el.findMatchingChildren("h1");
+        var children = $el._findMatchingChildren("h1");
 
         expect(children.length).to.eql(2);
         expect(children.every(function (child) {
@@ -201,7 +201,7 @@
       });
     });
 
-    describe("#findAllChildren", function () {
+    describe("#_findAllChildren", function () {
       var $el, children;
 
       it("collects every element's children in a new collection", function () {
@@ -209,7 +209,7 @@
         testNode2.innerHTML = "<h1>hello</h1><h1>hola</h1>";
 
         $el = new DOMNodeCollection([testNode1, testNode2]);
-        children = $el.findAllChildren();
+        children = $el._findAllChildren();
 
         expect(children.length).to.eql(3);
         expect(children.every(function (child) {
@@ -221,7 +221,7 @@
         testNode1.innerHTML = "<ul><li></li><li></li></ul>";
 
         $el = new DOMNodeCollection([testNode1]);
-        children = $el.findAllChildren();
+        children = $el._findAllChildren();
 
         expect(children.length).to.eql(3);
         expect(children.map(function (child) {

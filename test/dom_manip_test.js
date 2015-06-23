@@ -229,5 +229,35 @@
         })).to.eql(["UL", "LI", "LI"]);
       });
     });
+
+    describe("#parent", function () {
+      var childEls, $el, parents;
+
+      var getArray = function (selector) {
+        childEls = document.querySelectorAll(selector);
+        childEls = Array.prototype.slice.call(childEls);
+        return childEls;
+      };
+
+      itIsChainable("parent");
+
+      it("returns direct parent for every element in collection", function () {
+        $el = new DOMNodeCollection(getArray(".child"));
+        parents = $el.parent();
+
+        expect(parents.length).to.eql(3);
+        expect(parents.els.every(function (parent) {
+          return parent.className === "parent";
+        })).to.be.true;
+      });
+
+      it("doesn't duplicate parents if same parents", function () {
+        $el = new DOMNodeCollection(getArray(".parent"));
+        parents = $el.parent();
+
+        expect(parents.length).to.eql(1);
+        expect(parents.els[0].tagName).to.eql("UL");
+      });
+    });
   });
 })();

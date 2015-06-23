@@ -25,8 +25,15 @@
     this.els = els;
     this.length = this.els.length;
     this._data = {};
+    this._indexEls();
 
     if (this.length === 1) { this.parseData(); }
+  };
+
+  DOMNodeCollection.prototype._indexEls = function () {
+    for (var i = 0; i < this.length; i++) {
+      this[i] = this.els[i];
+    }
   };
 
   DOMNodeCollection.prototype.parseData = function () {

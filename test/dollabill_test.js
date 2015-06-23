@@ -88,8 +88,13 @@
         expect(nodes._data).to.eql({});
       });
 
+      it("indexes itself", function () {
+        var $el = new DOMNodeCollection([1, 2, 3, 4]);
+        expect($el[2]).to.eql(3);
+      });
+
       it("parses data if only one element passed in", function () {
-        var node = {};
+        var node = { _indexEls: function(){} };
         var parseData = chai.spy.on(node, "parseData");
 
         DOMNodeCollection.call(node, [1]);

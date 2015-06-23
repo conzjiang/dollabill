@@ -230,6 +230,25 @@
       });
     });
 
+    describe("#_hasId", function () {
+      var $el;
+
+      beforeEach(function () {
+        testNode1.id = "cat"
+        testNode2.id = "dog"
+
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+      });
+
+      it("returns true if any element has given id", function () {
+        expect($el._hasId("dog")).to.be.true;
+      });
+
+      it("returns false if no element has given id", function () {
+        expect($el._hasId("asdf")).to.be.false;
+      });
+    });
+
     describe("#parent", function () {
       var childEls, $el, parents;
 

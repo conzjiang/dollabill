@@ -163,11 +163,23 @@
     });
 
     describe("#children", function () {
-
       itIsChainable("children");
 
+    });
 
+    describe("#findMatchingChildren", function () {
+      it("collects only the children that match selector", function () {
+        testNode1.innerHTML = "<section><h1>hi</h1></section>";
+        testNode2.innerHTML = "<h1>fun</h1><h2>so fun</h2>";
 
+        var $el = new DOMNodeCollection([testNode1, testNode2]);
+        var children = $el.findMatchingChildren("h1");
+
+        expect(children.length).to.eql(2);
+        expect(children.every(function (child) {
+          return child.tagName === "H1";
+        })).to.be.true;
+      });
     });
 
     describe("#findAllChildren", function () {

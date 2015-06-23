@@ -163,8 +163,27 @@
     });
 
     describe("#children", function () {
+      var $el;
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection([]);
+      });
+
       itIsChainable("children");
 
+      it("finds only the matching children if selector given", function () {
+        var findMatchingChildren = chai.spy.on($el, "findMatchingChildren");
+        $el.children(".title");
+
+        expect(findMatchingChildren).to.be.called.with(".title");
+      });
+
+      it("finds all the children if none given", function () {
+        var findAllChildren = chai.spy.on($el, "findAllChildren");
+        $el.children();
+
+        expect(findAllChildren).to.be.called();
+      });
     });
 
     describe("#findMatchingChildren", function () {

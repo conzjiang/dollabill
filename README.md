@@ -11,6 +11,7 @@ I decided to try my hand at implementing jQuery from scratch as a way to learn v
 - `first`
 - `eq`
 - `find`
+- `filter`
 - `parent`/`children`
 - `closest`
 - `append`

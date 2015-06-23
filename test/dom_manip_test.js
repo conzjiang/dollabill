@@ -17,6 +17,12 @@
       });
     };
 
+    var getArray = function (selector) {
+      var childEls = document.querySelectorAll(selector);
+      childEls = Array.prototype.slice.call(childEls);
+      return childEls;
+    };
+
     beforeEach(function () {
       testNode1 = document.createElement("div");
       testNode2 = document.createElement("div");
@@ -230,6 +236,39 @@
       });
     });
 
+    describe("#filter", function () {
+      var $el, filtered;
+
+      itIsChainable("filter", ".cool");
+
+      beforeEach(function () {
+        var els = getArray(".title").concat(getArray(".child"));
+        $el = new DOMNodeCollection(els);
+      })
+
+      it("handles string input", function () {
+        filtered = $el.filter(".title");
+
+        expect(filtered.length).to.eql(2);
+        expect(filtered.els.every(function (el) {
+          return el.innerHTML === "hi";
+        })).to.be.true;
+      });
+
+      it("handles function", function () {
+        filtered = $el.filter(function () {
+          return this.tagName === "H2";
+        });
+
+        expect(filtered.length).to.eql(1);
+        expect(filtered.els[0].innerHTML).to.eql("hi");
+      });
+
+      it("returns an empty collection if bad input", function () {
+        expect($el.filter(1).length).to.eql(0);
+      });
+    });
+
     describe("#hasClass", function () {
       var $el;
 
@@ -314,13 +353,7 @@
     });
 
     describe("#parent", function () {
-      var childEls, $el, parents;
-
-      var getArray = function (selector) {
-        childEls = document.querySelectorAll(selector);
-        childEls = Array.prototype.slice.call(childEls);
-        return childEls;
-      };
+      var $el, parents;
 
       itIsChainable("parent");
 

@@ -106,10 +106,12 @@
   };
 
   DOMNodeCollection.prototype.closest = function (selector) {
-    if (this.parent().length === 0 || this.parent().is(selector)) {
-      return this.parent();
+    var $parent = this.parent();
+
+    if ($parent.length === 0 || $parent.is(selector)) {
+      return $parent;
     } else {
-      return this.parent().closest(selector);
+      return $parent.closest(selector);
     }
   };
 
@@ -163,6 +165,27 @@
 
   DOMNodeCollection.prototype.eq = function (index) {
     return new DOMNodeCollection([this.els[index]]);
+  };
+
+  DOMNodeCollection.prototype.filter = function (selector) {
+    var matches = [];
+    var filter = selector;
+
+    if (typeof selector === "string") {
+      filter = function () {
+        return dollabill(this).is(selector);
+      };
+    } else if (typeof selector !== "function") {
+      return new DOMNodeCollection([]);
+    }
+
+    this.each(function () {
+      if (filter.call(this)) {
+        matches.push(this);
+      }
+    });
+
+    return new DOMNodeCollection(matches);
   };
 
   DOMNodeCollection.prototype.find = function (selector) {

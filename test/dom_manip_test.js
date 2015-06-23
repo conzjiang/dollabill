@@ -249,6 +249,22 @@
       });
     });
 
+    describe("#_isTag", function () {
+      var $el;
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+      });
+
+      it("returns true if any element has given tag name", function () {
+        expect($el._isTag("div")).to.be.true;
+      });
+
+      it("returns false if no element has given tag name", function () {
+        expect($el._isTag("h1")).to.be.false;
+      });
+    });
+
     describe("#parent", function () {
       var childEls, $el, parents;
 

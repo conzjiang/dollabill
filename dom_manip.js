@@ -214,8 +214,7 @@
       var id = selector.slice(1);
       return this._hasId(id);
     } else {
-      var tag = selector.toUpperCase();
-      return this._isTag(tag);
+      return this._isTag(selector);
     }
   };
 
@@ -230,6 +229,8 @@
   };
 
   DOMNodeCollection.prototype._isTag = function (tag) {
+    tag = tag.toUpperCase();
+
     for (var i = 0; i < this.length; i++) {
       if (this.els[i].tagName === tag) {
         return true;

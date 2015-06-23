@@ -230,6 +230,25 @@
       });
     });
 
+    describe("#hasClass", function () {
+      var $el;
+
+      beforeEach(function () {
+        testNode1.className = "cat"
+        testNode2.className = "dog"
+
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+      });
+
+      it("returns true if any element has given class", function () {
+        expect($el.hasClass("dog")).to.be.true;
+      });
+
+      it("returns false if no element has given class", function () {
+        expect($el.hasClass("dfdg")).to.be.false;
+      });
+    });
+
     describe("#_hasId", function () {
       var $el;
 

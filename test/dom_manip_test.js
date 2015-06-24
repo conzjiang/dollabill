@@ -236,6 +236,28 @@
       });
     });
 
+    describe("#closest", function () {
+      var $el;
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection(getArray(".child"));
+      });
+
+      it("returns an empty collection if no matching elements", function () {
+        expect($el.closest("#bob").length).to.eql(0);
+      });
+
+      it("looks for a match within itself first", function () {
+        var $strong = $el.closest("strong");
+        expect($strong[0]).to.eql($el[0]);
+      });
+
+      it("finds a match within its ancestors", function () {
+        var $test = $el.closest("#test-palette");
+        expect($test.length).to.eql(1);
+      });
+    });
+
     describe("#filter", function () {
       var $el, filtered;
 

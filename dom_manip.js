@@ -106,12 +106,12 @@
   };
 
   DOMNodeCollection.prototype.closest = function (selector) {
-    var $parent = this.parent();
-
-    if ($parent.length === 0 || $parent.is(selector)) {
-      return $parent;
+    if (this.length === 0) {
+      return this;
+    } else if (this.is(selector)) {
+      return this.filter(selector).first();
     } else {
-      return $parent.closest(selector);
+      return this.parent().closest(selector);
     }
   };
 

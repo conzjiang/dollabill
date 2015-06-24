@@ -258,6 +258,25 @@
       });
     });
 
+    describe("#css", function () {
+      var $el;
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection([testNode1]);
+      });
+
+      it("handles string input", function () {
+        $el.css("color", "red");
+        expect(testNode1.style.color).to.eql("red");
+      });
+
+      it("handles object input", function () {
+        $el.css({ color: "blue", background: "red" });
+        expect(testNode1.style.color).to.eql("blue");
+        expect(testNode1.style.background).to.eql("red");
+      });
+    });
+
     describe("#filter", function () {
       var $el, filtered;
 

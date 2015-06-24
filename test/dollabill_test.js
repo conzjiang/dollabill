@@ -10,13 +10,13 @@
         it("with angle brackets", function () {
           $el = dollabill("<div>");
           expect($el).to.be.an.instanceof(DOMNodeCollection);
-          expect($el.els[0].tagName).to.eql("DIV");
+          expect($el[0].tagName).to.eql("DIV");
         });
 
         it("with CSS selector", function () {
           $el = dollabill(".title");
           expect($el).to.be.an.instanceof(DOMNodeCollection);
-          expect($el.els[0].className).to.eql("title");
+          expect($el[0].className).to.eql("title");
         });
       });
 
@@ -24,7 +24,7 @@
         var htmlEl = document.getElementById("test-palette");
         $el = dollabill(htmlEl);
         expect($el).to.be.an.instanceof(DOMNodeCollection);
-        expect($el.els[0]).to.eql(htmlEl);
+        expect($el[0]).to.eql(htmlEl);
       });
 
       it("handles functions", function () {

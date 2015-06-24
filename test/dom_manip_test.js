@@ -283,7 +283,7 @@
         });
 
         expect(filtered.length).to.eql(1);
-        expect(filtered.els[0].innerHTML).to.eql("hi");
+        expect(filtered[0].innerHTML).to.eql("hi");
       });
 
       it("returns an empty collection if bad input", function () {
@@ -394,7 +394,7 @@
         parents = $el.parent();
 
         expect(parents.length).to.eql(1);
-        expect(parents.els[0].tagName).to.eql("UL");
+        expect(parents[0].tagName).to.eql("UL");
       });
     });
   });

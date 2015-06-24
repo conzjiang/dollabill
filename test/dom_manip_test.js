@@ -277,6 +277,34 @@
       });
     });
 
+    describe("#data", function () {
+      var $el;
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection(getArray("#puppies"));
+      });
+
+      it("acts as a getter when passed a string", function () {
+        expect($el.data("name")).to.eql("schnauzer");
+      });
+
+      it("can set attributes by passing two values", function () {
+        $el.data("color", "brown");
+        expect($el._data.color).to.eql("brown");
+      });
+
+      it("can set multiple attributes by passing object", function () {
+        $el.data({ color: "black", mood: "happy" });
+        expect($el._data.color).to.eql("black");
+        expect($el._data.mood).to.eql("happy");
+      });
+
+      it("newly set data-attr also accessible as attr", function () {
+        $el.data("age", 3);
+        expect($el.attr("data-age")).to.eql("3");
+      });
+    });
+
     describe("#filter", function () {
       var $el, filtered;
 

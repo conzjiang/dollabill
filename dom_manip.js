@@ -166,7 +166,15 @@
   };
 
   DOMNodeCollection.prototype.eq = function (index) {
-    return new DOMNodeCollection([this.els[index]]);
+    var node, elAtIndex;
+
+    if (node = this[index]) {
+      elAtIndex = [node];
+    } else {
+      elAtIndex = [];
+    }
+
+    return new DOMNodeCollection(elAtIndex);
   };
 
   DOMNodeCollection.prototype.filter = function (selector) {

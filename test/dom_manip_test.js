@@ -373,6 +373,24 @@
       });
     });
 
+    describe("#eq", function () {
+      var $el;
+
+      itIsChainable("eq", 0);
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+      });
+
+      it("returns new collection with element at specified index", function () {
+        expect($el.eq(1)[0]).to.eql(testNode2);
+      });
+
+      it("returns an empty collection if invalid index", function () {
+        expect($el.eq(5).length).to.eql(0);
+      });
+    });
+
     describe("#filter", function () {
       var $el, filtered;
 

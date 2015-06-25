@@ -468,6 +468,39 @@
       });
     });
 
+    describe("#html", function () {
+      var $el;
+
+      itIsChainable("html", "hi");
+
+      beforeEach(function () {
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+        testNode1.innerHTML = "<p>ho ho ho</p><p>love, santa</p>";
+        testNode2.innerHTML = "hi";
+      });
+
+      it("returns first el's innerHTML when given no arguments", function () {
+        expect($el.html()).to.eql("<p>ho ho ho</p><p>love, santa</p>");
+      });
+
+      it("sets every element's innerHTML when given argument", function () {
+        $el.html("hello");
+
+        expect(testNode1.innerHTML).to.eql("hello");
+        expect(testNode2.innerHTML).to.eql("hello");
+      });
+
+      it("empties out innerHTML when given empty string", function () {
+        $el.html("");
+        expect(testNode1.innerHTML).to.be.empty;
+      });
+
+      it("can set zero as innerHTML", function () {
+        $el.html(0);
+        expect(testNode1.innerHTML).to.eql("0");
+      });
+    });
+
     describe("#is", function () {
       var $el;
 

@@ -44,7 +44,7 @@
 
         return this;
       } else {
-        return this.els[0].getAttribute(attr);
+        return this[0].getAttribute(attr);
       }
     } else if (arguments.length === 2) {
       var attr = arguments[0];
@@ -214,12 +214,12 @@
   };
 
   DOMNodeCollection.prototype.first = function () {
-    return dollabill(this.els[0]);
+    return dollabill(this[0]);
   };
 
   DOMNodeCollection.prototype.hasClass = function (className) {
     for (var i = 0; i < this.length; i++) {
-      if (this.els[i].classList.contains(className)) {
+      if (this[i].classList.contains(className)) {
         return true;
       }
     }
@@ -235,7 +235,7 @@
 
       return this;
     } else {
-      return this.els[0].innerHTML;
+      return this[0].innerHTML;
     }
   };
 
@@ -253,7 +253,7 @@
 
   DOMNodeCollection.prototype._hasId = function (id) {
     for (var i = 0; i < this.length; i++) {
-      if (this.els[i].id === id) {
+      if (this[i].id === id) {
         return true;
       }
     }
@@ -265,7 +265,7 @@
     tag = tag.toUpperCase();
 
     for (var i = 0; i < this.length; i++) {
-      if (this.els[i].tagName === tag) {
+      if (this[i].tagName === tag) {
         return true;
       }
     }

@@ -640,5 +640,34 @@
         expect(testNode1.className).to.eql("big cool");
       });
     });
+
+    describe("#toggleClass", function () {
+      var $el;
+
+      itIsChainable("toggleClass", "fun");
+
+      it("adds the given class if doesn't exist", function () {
+        $el = new DOMNodeCollection([testNode1]);
+        $el.toggleClass("fun");
+        expect(testNode1.className).to.eql("fun");
+      });
+
+      it("removes the given class if exists", function () {
+        $el = new DOMNodeCollection([testNode1]);
+        testNode1.className = "cool";
+        $el.toggleClass("cool");
+
+        expect(testNode1.className).to.be.empty;
+      });
+
+      it("correctly toggles every element", function () {
+        $el = new DOMNodeCollection([testNode1, testNode2]);
+        testNode1.className = "fun";
+        $el.toggleClass("fun");
+
+        expect(testNode1.className).to.be.empty;
+        expect(testNode2.className).to.eql("fun");
+      });
+    });
   });
 })();

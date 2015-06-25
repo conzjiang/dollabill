@@ -437,6 +437,18 @@
       });
     });
 
+    describe("#first", function () {
+      itIsChainable("first");
+
+      it("returns a new instance with just the first element", function () {
+        var $el = new DOMNodeCollection([testNode1, testNode2]);
+        var $first = $el.first();
+
+        expect($first.length).to.eql(1);
+        expect($first[0]).to.eql(testNode1);
+      });
+    });
+
     describe("#hasClass", function () {
       var $el;
 

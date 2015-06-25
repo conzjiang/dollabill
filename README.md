@@ -35,3 +35,5 @@ I decided to try my hand at implementing jQuery from scratch as a way to learn v
 - Better organize event handlers
 - #is to take chain selectors (ex. `#main.group`)
 - #is to take `:checked`
+- Read bracket selectors (ex. `li[data-id=1]`)
+

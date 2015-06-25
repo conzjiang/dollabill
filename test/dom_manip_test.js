@@ -424,6 +424,19 @@
       });
     });
 
+    describe("#find", function () {
+      itIsChainable("find", "p");
+
+      it("finds all the descendants that match given selector", function () {
+        var $el = new DOMNodeCollection(getArray("#test-palette"));
+        var $titles = $el.find(".title");
+
+        $titles.each(function () {
+          expect(this.innerHTML).to.eql("hi");
+        });
+      });
+    });
+
     describe("#hasClass", function () {
       var $el;
 

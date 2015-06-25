@@ -166,15 +166,7 @@
   };
 
   DOMNodeCollection.prototype.eq = function (index) {
-    var node, elAtIndex;
-
-    if (node = this[index]) {
-      elAtIndex = [node];
-    } else {
-      elAtIndex = [];
-    }
-
-    return new DOMNodeCollection(elAtIndex);
+    return dollabill(this[index]);
   };
 
   DOMNodeCollection.prototype.filter = function (selector) {

@@ -359,6 +359,20 @@
       });
     });
 
+    describe("#empty", function () {
+      itIsChainable("empty");
+
+      it("clears out every element's innerHTML", function () {
+        var $el = new DOMNodeCollection([testNode1, testNode2]);
+        testNode1.innerHTML = "asjgklsdfgkljsfkg";
+        testNode2.innerHTML = "<p>adfd</p><p>asgfdg</p>";
+
+        $el.empty();
+
+        expect(testNode1.innerHTML).to.be.empty;
+      });
+    });
+
     describe("#filter", function () {
       var $el, filtered;
 

@@ -281,6 +281,8 @@
     this.each(function () {
       this.parentElement && this.parentElement.removeChild(this);
     });
+
+    return this;
   };
 
   DOMNodeCollection.prototype.removeClass = function (className) {

@@ -588,5 +588,25 @@
         expect(parents[0].tagName).to.eql("UL");
       });
     });
+
+    describe("#remove", function () {
+      itIsChainable("remove");
+
+      it("removes all of its elements from their contexts", function () {
+        var testEl, $el, innerHTML;
+
+        testEl = document.getElementById("puppies");
+        $el = new DOMNodeCollection(getArray("#help"));
+        $el.remove();
+
+        innerHTML = testEl.innerHTML.trim();
+
+        expect(innerHTML).to.eql("<strong id=\"sos\">sos</strong>");
+      });
+    });
+
+    describe("#removeClass", function () {
+
+    });
   });
 })();

@@ -171,11 +171,11 @@
     describe("#children", function () {
       var $el;
 
+      itIsChainable("children");
+
       beforeEach(function () {
         $el = new DOMNodeCollection([]);
       });
-
-      itIsChainable("children");
 
       it("finds only the matching children if selector given", function () {
         var findMatchingChildren = chai.spy.on($el, "_findMatchingChildren");
@@ -239,6 +239,8 @@
     describe("#closest", function () {
       var $el;
 
+      itIsChainable("closest", "a");
+
       beforeEach(function () {
         $el = new DOMNodeCollection(getArray(".child"));
       });
@@ -261,6 +263,8 @@
     describe("#css", function () {
       var $el;
 
+      itIsChainable("css", {});
+
       beforeEach(function () {
         $el = new DOMNodeCollection([testNode1]);
       });
@@ -279,6 +283,8 @@
 
     describe("#data", function () {
       var $el;
+
+      itIsChainable("data", {});
 
       beforeEach(function () {
         $el = new DOMNodeCollection(getArray("#puppies"));
@@ -307,6 +313,8 @@
 
     describe("#each", function () {
       var $el;
+
+      itIsChainable("each", function(){});
 
       it("iterates over each inner element", function () {
         var counter = 0;

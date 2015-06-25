@@ -153,6 +153,8 @@
     this.els.forEach(function (el, i) {
       callback.call(el, i);
     });
+
+    return this;
   };
 
   DOMNodeCollection.prototype.empty = function () {

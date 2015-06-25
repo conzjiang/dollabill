@@ -287,8 +287,14 @@
 
   DOMNodeCollection.prototype.removeClass = function (className) {
     if (className) {
+      var classNames = className.split(" ");
+
       this.each(function () {
-        this.classList.remove(className);
+        var numClasses = classNames.length;
+
+        for (var i = 0; i < numClasses; i++) {
+          this.classList.remove(classNames[i]);
+        }
       });
     } else {
       this.each(function () {

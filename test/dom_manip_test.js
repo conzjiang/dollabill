@@ -606,7 +606,32 @@
     });
 
     describe("#removeClass", function () {
+      itIsChainable("removeClass");
 
+      it("removes the given class from every element", function () {
+        var $el = new DOMNodeCollection(getArray(".child"));
+        $el.removeClass("child");
+
+        $el.each(function () {
+          expect(this.className).to.be.empty;
+        });
+      });
+
+      it("removes every class if passed no arguments", function () {
+        var $el = new DOMNodeCollection([testNode1]);
+        testNode1.className = "big red fun cool";
+        $el.removeClass();
+
+        expect(testNode1.className).to.be.empty;
+      });
+
+      it("removes multiple classes at once separated by a space", function () {
+        var $el = new DOMNodeCollection([testNode1]);
+        testNode1.className = "big red fun cool";
+        $el.removeClass("fun red");
+
+        expect(testNode1.className).to.eql("big cool");
+      });
     });
   });
 })();

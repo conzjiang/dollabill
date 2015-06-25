@@ -305,6 +305,52 @@
       });
     });
 
+    describe("#each", function () {
+      var $el;
+
+      it("iterates over each inner element", function () {
+        var counter = 0;
+
+        $el = new DOMNodeCollection([1, 2, 3, 4]);
+
+        $el.each(function () {
+          counter++;
+        });
+
+        expect(counter).to.eql(4);
+      });
+
+      it("callback is called in the context of each element", function () {
+        var store = [];
+
+        $el = new DOMNodeCollection([
+          { name: "sennacy" },
+          { name: "rocky" }
+        ]);
+
+        $el.each(function () {
+          store.push(this);
+        });
+
+        expect(store).to.eql([
+          { name: "sennacy" },
+          { name: "rocky" }
+        ]);
+      });
+
+      it("passes the current index into the callback", function () {
+        var indices = [];
+
+        $el = new DOMNodeCollection([1, 2, 3, 4]);
+
+        $el.each(function (i) {
+          indices.push(i);
+        });
+
+        expect(indices).to.eql([0, 1, 2, 3]);
+      });
+    });
+
     describe("#filter", function () {
       var $el, filtered;
 

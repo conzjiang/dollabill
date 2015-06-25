@@ -42,6 +42,13 @@
         });
       });
 
+      it("adds multiple classes at once separated by spaces", function () {
+        $el = new DOMNodeCollection([testNode1]);
+        $el.addClass("fun cool");
+
+        expect(testNode1.className).to.eql("fun cool");
+      });
+
       it("doesn't overwrite classes", function () {
         $el = new DOMNodeCollection([testNode1]);
         $el.addClass("cool");

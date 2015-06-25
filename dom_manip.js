@@ -3,8 +3,13 @@
   var DOMNodeCollection = dollabill.DOMNodeCollection;
 
   DOMNodeCollection.prototype.addClass = function (className) {
+    var classNames = className.split(" ");
+    var numClasses = classNames.length;
+
     this.each(function () {
-      this.classList.add(className);
+      for (var i = 0; i < numClasses; i++) {
+        this.classList.add(classNames[i]);
+      }
     });
 
     return this;
@@ -288,10 +293,9 @@
   DOMNodeCollection.prototype.removeClass = function (className) {
     if (className) {
       var classNames = className.split(" ");
+      var numClasses = classNames.length;
 
       this.each(function () {
-        var numClasses = classNames.length;
-
         for (var i = 0; i < numClasses; i++) {
           this.classList.remove(classNames[i]);
         }
